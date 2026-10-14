@@ -33,8 +33,11 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                                 .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
-                                .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/register").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/documentation",
+                                        "/swagger-ui/**",
+                                        "/v3/api-docs/**",
+                                        "/swagger-ui.html").permitAll()
                                 .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
