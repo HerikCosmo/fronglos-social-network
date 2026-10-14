@@ -2,6 +2,7 @@ package cosmo.herik.fronglos.exception;
 
 import cosmo.herik.fronglos.dto.response.ApiErrorResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -42,6 +43,16 @@ public class GlobalHandlerException {
                 HttpStatus.BAD_REQUEST.value(),
                 "Validation failed",
                 errors
+        );
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(BadCredentialsException.class)
+    public ApiErrorResponse handleBadCredentialsException(BadCredentialsException ex) {
+        return new ApiErrorResponse(
+                HttpStatus.UNAUTHORIZED.value(),
+                "Invalid email or password",
+                null
         );
     }
 }
