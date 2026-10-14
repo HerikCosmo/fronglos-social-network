@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestControllerAdvice
@@ -23,21 +25,21 @@ public class GlobalHandlerException {
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(ResourceAlreadyExistsException.class)
     public ApiErrorResponse handleResourceAlreadyExistsException(ResourceAlreadyExistsException ex) {
-        return new ApiErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage(), null);
+        return new ApiErrorResponse(HttpStatus.CONFLICT.value(), ex.getMessage(), null);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ApiErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
+        Map<String, List<String>> errors = new HashMap<>();
 
         ex.getBindingResult()
                 .getFieldErrors()
                 .forEach(error ->
-                        errors.put(
+                        errors.computeIfAbsent(
                                 error.getField(),
-                                error.getDefaultMessage()
-                        ));
+                                field -> new ArrayList<>()
+                        ).add(error.getDefaultMessage()));
 
         return new ApiErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
