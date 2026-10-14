@@ -6,10 +6,10 @@ import cosmo.herik.fronglos.dto.request.RegisterUserRequest;
 import cosmo.herik.fronglos.dto.response.LoginResponse;
 import cosmo.herik.fronglos.dto.response.RegisterUserResponse;
 import cosmo.herik.fronglos.entity.User;
+import cosmo.herik.fronglos.exception.ResourceAlreadyExistsException;
 import cosmo.herik.fronglos.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,6 +29,14 @@ public class AuthService {
     }
 
     public RegisterUserResponse register(RegisterUserRequest request) {
+        if(userRepository.existsByUsername(request.username())) {
+            throw new ResourceAlreadyExistsException("Username is already taken");
+        }
+
+        if(userRepository.existsByEmail(request.email())) {
+            throw new ResourceAlreadyExistsException("Email is already registered");
+        }
+
         var user = User.builder()
                 .username(request.username())
                 .email(request.email())
