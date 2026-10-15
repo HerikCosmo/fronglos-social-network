@@ -8,6 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +20,7 @@ public class GlobalHandlerException {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(UsernameNotFoundException.class)
     public ApiErrorResponse handleUsernameNotFoundException(UsernameNotFoundException ex) {
-        return new ApiErrorResponse(HttpStatus.NOT_FOUND.value(), "User (" + ex.getMessage() + ") not found", null);
+        return new ApiErrorResponse(HttpStatus.NOT_FOUND.value(), "User not found", null);
     }
 
     @ResponseStatus(HttpStatus.CONFLICT)
@@ -54,6 +55,18 @@ public class GlobalHandlerException {
         return new ApiErrorResponse(
                 HttpStatus.UNAUTHORIZED.value(),
                 "Invalid email or password",
+                null
+        );
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ApiErrorResponse handleMethodArgumentTypeMismatch(
+            MethodArgumentTypeMismatchException ex) {
+
+        return new ApiErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                "Invalid parameter: " + ex.getName(),
                 null
         );
     }

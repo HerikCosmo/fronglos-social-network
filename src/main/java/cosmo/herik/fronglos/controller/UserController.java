@@ -1,12 +1,11 @@
 package cosmo.herik.fronglos.controller;
 
 import cosmo.herik.fronglos.dto.response.AuthUserProfileResponse;
+import cosmo.herik.fronglos.dto.response.UserProfileResponse;
 import cosmo.herik.fronglos.service.UserService;
-import org.springframework.http.HttpHeaders;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/users")
@@ -18,7 +17,12 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public AuthUserProfileResponse me(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader) {
-        return userService.getAuthUserProfile(authorizationHeader);
+    public AuthUserProfileResponse getCurrentUser() {
+        return userService.getAuthUserProfile();
+    }
+
+    @GetMapping("/{id}")
+    public UserProfileResponse getUserById(@PathVariable UUID id) {
+        return userService.getUserProfile(id);
     }
 }
