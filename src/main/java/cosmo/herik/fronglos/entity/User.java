@@ -31,6 +31,9 @@ public class User implements UserDetails {
 
     private String displayName;
 
+    @OneToMany(mappedBy = "user")
+    private List<Post> posts;
+
     @Override
     public String getUsername() {
         return this.email;
