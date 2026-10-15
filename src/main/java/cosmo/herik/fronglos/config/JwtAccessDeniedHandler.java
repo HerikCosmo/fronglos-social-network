@@ -30,7 +30,9 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         Map<String, Object> body = Map.of(
                 "status", 403,
-                "message", "You do not have permission to access this resource",
+                "message", !accessDeniedException.getMessage().isEmpty()
+                        ? accessDeniedException.getMessage()
+                        : "You do not have permission to access this resource",
                 "errors", List.of()
         );
 

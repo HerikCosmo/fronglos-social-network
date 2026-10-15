@@ -4,10 +4,10 @@ import cosmo.herik.fronglos.dto.request.PostRequest;
 import cosmo.herik.fronglos.dto.response.PostResponse;
 import cosmo.herik.fronglos.service.PostService;
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/posts")
@@ -19,7 +19,19 @@ public class PostController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public PostResponse savePost(@Valid @RequestBody PostRequest request) {
         return postService.save(request);
+    }
+
+    @GetMapping("/{id}")
+    public PostResponse getPostById(@PathVariable UUID id) {
+        return postService.getById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletePostById(@PathVariable UUID id) {
+        postService.deleteById(id);
     }
 }

@@ -23,6 +23,12 @@ public class GlobalHandlerException {
         return new ApiErrorResponse(HttpStatus.NOT_FOUND.value(), "User not found", null);
     }
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(PostNotFoundException.class)
+    public ApiErrorResponse handlePostNotFound(PostNotFoundException ex) {
+        return new ApiErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage(), null);
+    }
+
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(ResourceAlreadyExistsException.class)
     public ApiErrorResponse handleResourceAlreadyExistsException(ResourceAlreadyExistsException ex) {
