@@ -76,10 +76,27 @@ public class FollowService {
                 Sort.by("followedAt").descending()
         );
 
-        Page<Follow> followers = followRepository.findByFollowerId(id, pageable);
+        Page<Follow> followings = followRepository.findByFollowerId(id, pageable);
+
+        return followings.map(
+                follow -> userMapper.toSimpleUserProfile(follow.getFollowing())
+        );
+    }
+
+    public Page<SimpleUserProfileResponse> getFollowers(UUID id, int page, int size) {
+        userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException(id.toString()));
+
+        Pageable pageable = PageRequest.of(
+                page,
+                size,
+                Sort.by("followedAt").descending()
+        );
+
+        Page<Follow> followers = followRepository.findByFollowingId(id, pageable);
 
         return followers.map(
-                follow -> userMapper.toSimpleUserProfile(follow.getFollowing())
+                follow -> userMapper.toSimpleUserProfile(follow.getFollower())
         );
     }
 }

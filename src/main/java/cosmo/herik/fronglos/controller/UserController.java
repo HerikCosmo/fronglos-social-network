@@ -65,4 +65,13 @@ public class UserController {
     ) {
         return followService.getFollowing(id, page, size);
     }
+
+    @GetMapping("/{id}/followers")
+    public Page<SimpleUserProfileResponse> getFollowers(
+            @PathVariable UUID id,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "50") int size
+    ) {
+        return followService.getFollowers(id, page, size);
+    }
 }
