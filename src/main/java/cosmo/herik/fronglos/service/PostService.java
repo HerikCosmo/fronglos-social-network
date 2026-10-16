@@ -4,6 +4,7 @@ import cosmo.herik.fronglos.dto.request.PostRequest;
 import cosmo.herik.fronglos.dto.response.PostResponse;
 import cosmo.herik.fronglos.entity.Post;
 import cosmo.herik.fronglos.exception.PostNotFoundException;
+import cosmo.herik.fronglos.mapper.PostMapper;
 import cosmo.herik.fronglos.repository.PostRepository;
 import cosmo.herik.fronglos.repository.UserRepository;
 import org.springframework.data.domain.Page;
@@ -14,7 +15,6 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -22,6 +22,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final CurrentUserService currentUserService;
     private final UserRepository userRepository;
+    private final PostMapper postMapper = PostMapper.INSTANCE;
 
     public PostService(
             PostRepository postRepository,
@@ -41,35 +42,14 @@ public class PostService {
                 .user(user)
                 .build();
 
-        var savedPost = postRepository.save(post);
-
-        return new PostResponse(
-                savedPost.getId(),
-                savedPost.getContent(),
-                savedPost.getCreatedAt(),
-                new PostResponse.AuthorResponse(
-                        user.getId(),
-                        user.getDisplayName(),
-                        user.getPublicUsername()
-                )
-        );
-
+        return postMapper.toPostResponse(postRepository.save(post));
     }
 
     public PostResponse getById(UUID id) {
         var post = postRepository.findById(id)
                 .orElseThrow(() -> new PostNotFoundException(id.toString()));
 
-        return new PostResponse(
-                post.getId(),
-                post.getContent(),
-                post.getCreatedAt(),
-                new PostResponse.AuthorResponse(
-                        post.getUser().getId(),
-                        post.getUser().getDisplayName(),
-                        post.getUser().getPublicUsername()
-                )
-        );
+        return postMapper.toPostResponse(post);
     }
 
     public Page<PostResponse> getPostsFromUserId(UUID id, int page, int size) {
@@ -84,16 +64,7 @@ public class PostService {
 
         Page<Post> posts = postRepository.findAllByUserId(id, pageable);
 
-        return posts.map(post -> new PostResponse(
-               post.getId(),
-               post.getContent(),
-               post.getCreatedAt(),
-               new PostResponse.AuthorResponse(
-                       post.getUser().getId(),
-                       post.getUser().getDisplayName(),
-                       post.getUser().getPublicUsername()
-               )
-       ));
+        return posts.map(postMapper::toPostResponse);
     }
 
     public void deleteById(UUID id) {
