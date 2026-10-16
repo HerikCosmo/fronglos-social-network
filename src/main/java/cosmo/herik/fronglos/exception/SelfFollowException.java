@@ -1,0 +1,7 @@
+package cosmo.herik.fronglos.exception;
+
+public class SelfFollowException extends RuntimeException{
+    public SelfFollowException() {
+        super("You cannot follow yourself");
+    }
+}

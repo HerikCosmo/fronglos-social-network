@@ -3,9 +3,11 @@ package cosmo.herik.fronglos.controller;
 import cosmo.herik.fronglos.dto.response.AuthUserProfileResponse;
 import cosmo.herik.fronglos.dto.response.PostResponse;
 import cosmo.herik.fronglos.dto.response.UserProfileResponse;
+import cosmo.herik.fronglos.service.FollowService;
 import cosmo.herik.fronglos.service.PostService;
 import cosmo.herik.fronglos.service.UserService;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -15,10 +17,12 @@ import java.util.UUID;
 public class UserController {
     private final UserService userService;
     private final PostService postService;
+    private final FollowService followService;
 
-    public UserController(UserService userService, PostService postService) {
+    public UserController(UserService userService, PostService postService, FollowService followService) {
         this.userService = userService;
         this.postService = postService;
+        this.followService = followService;
     }
 
     @GetMapping("/me")
@@ -37,5 +41,11 @@ public class UserController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "50") int size) {
         return postService.getPostsFromUserId(id, page, size);
+    }
+
+    @PostMapping("/{id}/follow")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void followerUser(@PathVariable UUID id) {
+        followService.follow(id);
     }
 }

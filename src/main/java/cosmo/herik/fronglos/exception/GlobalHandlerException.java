@@ -76,4 +76,14 @@ public class GlobalHandlerException {
                 null
         );
     }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(SelfFollowException.class)
+    public ApiErrorResponse handleSelfFollowException(SelfFollowException ex) {
+        return new ApiErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                null
+        );
+    }
 }
