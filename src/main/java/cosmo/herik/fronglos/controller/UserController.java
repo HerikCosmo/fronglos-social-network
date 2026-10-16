@@ -48,4 +48,10 @@ public class UserController {
     public void followerUser(@PathVariable UUID id) {
         followService.follow(id);
     }
+
+    @DeleteMapping("/{id}/follow")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void unfollowUser(@PathVariable UUID id) {
+        followService.unfollow(id);
+    }
 }

@@ -2,12 +2,14 @@ package cosmo.herik.fronglos.service;
 
 import cosmo.herik.fronglos.entity.Follow;
 import cosmo.herik.fronglos.entity.User;
+import cosmo.herik.fronglos.exception.NotFollowingException;
 import cosmo.herik.fronglos.exception.ResourceAlreadyExistsException;
 import cosmo.herik.fronglos.exception.SelfFollowException;
 import cosmo.herik.fronglos.repository.FollowRepository;
 import cosmo.herik.fronglos.repository.UserRepository;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -41,5 +43,19 @@ public class FollowService {
         }
 
         followRepository.save(new Follow(followerUser, followingUser));
+    }
+
+    @Transactional
+    public void unfollow(UUID followingId) {
+        User followerUser = currentUserService.getCurrentUser();
+
+        userRepository.findById(followingId)
+                .orElseThrow(() -> new UsernameNotFoundException(followingId.toString()));
+
+        if(!followRepository.existsByFollowerIdAndFollowingId(followerUser.getId(), followingId)) {
+            throw new NotFollowingException();
+        }
+
+        followRepository.deleteByFollowerIdAndFollowingId(followerUser.getId(), followingId);
     }
 }

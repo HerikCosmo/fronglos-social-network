@@ -24,6 +24,12 @@ public class GlobalHandlerException {
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFollowingException.class)
+    public ApiErrorResponse handleNotFollowingException(NotFollowingException ex) {
+        return new ApiErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage(), null);
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(PostNotFoundException.class)
     public ApiErrorResponse handlePostNotFound(PostNotFoundException ex) {
         return new ApiErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage(), null);
