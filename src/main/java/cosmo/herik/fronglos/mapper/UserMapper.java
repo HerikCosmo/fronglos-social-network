@@ -14,10 +14,10 @@ public interface UserMapper {
     @Mapping(target = "username", source = "user.publicUsername")
     @Mapping(target = "numberFollowers", source = "numberFollowers")
     @Mapping(target = "numberFollowing", source = "numberFollowing")
-    AuthUserProfileResponse toAuthUserProfileResponse(User user, Integer numberFollowers, Integer numberFollowing);
+    AuthUserProfileResponse toAuthUserProfileResponse(User user, Long numberFollowers, Long numberFollowing);
 
     @Mapping(target = "username", source = "user.publicUsername")
     @Mapping(target = "numberFollowers", source = "numberFollowers")
     @Mapping(target = "numberFollowing", source = "numberFollowing")
-    UserProfileResponse toUserProfile(User user, Integer numberFollowers, Integer numberFollowing);
+    UserProfileResponse toUserProfile(User user, Long numberFollowers, Long numberFollowing);
 }

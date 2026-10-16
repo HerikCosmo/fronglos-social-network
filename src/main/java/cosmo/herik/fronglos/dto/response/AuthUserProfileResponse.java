@@ -7,7 +7,7 @@ public record AuthUserProfileResponse(
         String displayName,
         String username,
         String email,
-        Integer numberFollowers,
-        Integer numberFollowing
+        Long numberFollowers,
+        Long numberFollowing
 ){
 }

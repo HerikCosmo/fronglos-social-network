@@ -10,4 +10,6 @@ import java.util.UUID;
 public interface FollowRepository extends JpaRepository<Follow, UUID> {
     boolean existsByFollowerIdAndFollowingId(UUID followerId, UUID followingId);
     void deleteByFollowerIdAndFollowingId(UUID followerId, UUID followingId);
+    long countByFollowerId(UUID followerId);
+    long countByFollowingId(UUID followingId);
 }
