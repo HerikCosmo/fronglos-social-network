@@ -2,7 +2,9 @@ package cosmo.herik.fronglos.controller;
 
 import cosmo.herik.fronglos.dto.response.AuthUserProfileResponse;
 import cosmo.herik.fronglos.dto.response.PostResponse;
+import cosmo.herik.fronglos.dto.response.SimpleUserProfileResponse;
 import cosmo.herik.fronglos.dto.response.UserProfileResponse;
+import cosmo.herik.fronglos.entity.Follow;
 import cosmo.herik.fronglos.service.FollowService;
 import cosmo.herik.fronglos.service.PostService;
 import cosmo.herik.fronglos.service.UserService;
@@ -53,5 +55,14 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void unfollowUser(@PathVariable UUID id) {
         followService.unfollow(id);
+    }
+
+    @GetMapping("/{id}/following")
+    public Page<SimpleUserProfileResponse> getFollowing(
+            @PathVariable UUID id,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "50") int size
+    ) {
+        return followService.getFollowing(id, page, size);
     }
 }

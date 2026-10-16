@@ -1,6 +1,7 @@
 package cosmo.herik.fronglos.mapper;
 
 import cosmo.herik.fronglos.dto.response.AuthUserProfileResponse;
+import cosmo.herik.fronglos.dto.response.SimpleUserProfileResponse;
 import cosmo.herik.fronglos.dto.response.UserProfileResponse;
 import cosmo.herik.fronglos.entity.User;
 import org.mapstruct.Mapper;
@@ -20,4 +21,7 @@ public interface UserMapper {
     @Mapping(target = "numberFollowers", source = "numberFollowers")
     @Mapping(target = "numberFollowing", source = "numberFollowing")
     UserProfileResponse toUserProfile(User user, Long numberFollowers, Long numberFollowing);
+
+    @Mapping(target = "username", source = "user.publicUsername")
+    SimpleUserProfileResponse toSimpleUserProfile(User user);
 }
