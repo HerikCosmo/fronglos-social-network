@@ -3,6 +3,7 @@ package cosmo.herik.fronglos.controller;
 import cosmo.herik.fronglos.dto.request.PostRequest;
 import cosmo.herik.fronglos.dto.response.PostResponse;
 import cosmo.herik.fronglos.service.PostService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/posts")
+@SecurityRequirement(name = "bearerAuth")
 public class PostController {
     private final PostService postService;
 

@@ -8,6 +8,7 @@ import cosmo.herik.fronglos.entity.Follow;
 import cosmo.herik.fronglos.service.FollowService;
 import cosmo.herik.fronglos.service.PostService;
 import cosmo.herik.fronglos.service.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/users")
+@SecurityRequirement(name = "bearerAuth")
 public class UserController {
     private final UserService userService;
     private final PostService postService;

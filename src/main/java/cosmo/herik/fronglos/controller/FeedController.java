@@ -1,17 +1,14 @@
 package cosmo.herik.fronglos.controller;
 
-import cosmo.herik.fronglos.dto.request.PostRequest;
 import cosmo.herik.fronglos.dto.response.PostResponse;
 import cosmo.herik.fronglos.service.PostService;
-import jakarta.validation.Valid;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/feed")
+@SecurityRequirement(name = "bearerAuth")
 public class FeedController {
     private final PostService postService;
 
