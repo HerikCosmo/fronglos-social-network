@@ -1,9 +1,9 @@
 package cosmo.herik.fronglos.controller;
 
+import cosmo.herik.fronglos.docs.PostControllerDocs;
 import cosmo.herik.fronglos.dto.request.PostRequest;
 import cosmo.herik.fronglos.dto.response.PostResponse;
 import cosmo.herik.fronglos.service.PostService;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -12,25 +12,27 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/posts")
-@SecurityRequirement(name = "bearerAuth")
-public class PostController {
+public class PostController implements PostControllerDocs {
     private final PostService postService;
 
     public PostController(PostService postService) {
         this.postService = postService;
     }
 
+    @Override
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PostResponse savePost(@Valid @RequestBody PostRequest request) {
         return postService.save(request);
     }
 
+    @Override
     @GetMapping("/{id}")
     public PostResponse getPostById(@PathVariable UUID id) {
         return postService.getById(id);
     }
 
+    @Override
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePostById(@PathVariable UUID id) {

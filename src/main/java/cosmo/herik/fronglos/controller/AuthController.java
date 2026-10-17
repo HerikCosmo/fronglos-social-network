@@ -1,5 +1,6 @@
 package cosmo.herik.fronglos.controller;
 
+import cosmo.herik.fronglos.docs.AuthControllerDocs;
 import cosmo.herik.fronglos.dto.request.LoginRequest;
 import cosmo.herik.fronglos.dto.request.RegisterUserRequest;
 import cosmo.herik.fronglos.dto.response.LoginResponse;
@@ -11,18 +12,20 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
-public class AuthController {
+public class AuthController implements AuthControllerDocs {
     private final AuthService authService;
 
     public AuthController(AuthService authService) {
         this.authService = authService;
     }
 
+    @Override
     @PostMapping("/login")
     public LoginResponse login(@Valid @RequestBody LoginRequest request) {
         return authService.login(request);
     }
 
+    @Override
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public RegisterUserResponse register(@Valid @RequestBody RegisterUserRequest request) {

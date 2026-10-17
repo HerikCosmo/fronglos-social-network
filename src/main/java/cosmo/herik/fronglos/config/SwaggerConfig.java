@@ -13,7 +13,7 @@ public class SwaggerConfig {
     public OpenAPI customOpenApi() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Minha API")
+                        .title("Fronglos Social Network API")
                         .version("1.0.0")
                         .description("Documentação da API"))
                 .components(new Components()
