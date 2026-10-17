@@ -76,9 +76,9 @@ public class FollowService {
                 Sort.by("followedAt").descending()
         );
 
-        Page<Follow> followings = followRepository.findByFollowerId(id, pageable);
+        Page<Follow> following = followRepository.findByFollowerId(id, pageable);
 
-        return followings.map(
+        return following.map(
                 follow -> userMapper.toSimpleUserProfile(follow.getFollowing())
         );
     }

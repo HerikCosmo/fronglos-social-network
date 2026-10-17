@@ -67,6 +67,16 @@ public class PostService {
         return posts.map(postMapper::toPostResponse);
     }
 
+    public Page<PostResponse> getFeedFromCurrentId(int page, int size) {
+        var user = currentUserService.getCurrentUser();
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<Post> posts = postRepository.findFeedByUserId(user.getId(), pageable);
+
+        return posts.map(postMapper::toPostResponse);
+    }
+
     public void deleteById(UUID id) {
         var user = currentUserService.getCurrentUser();
 
