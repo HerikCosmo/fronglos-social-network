@@ -44,6 +44,8 @@ O Fronglos permite:
 
 ## Como executar
 
+## Como executar
+
 ### 1. Clonar o repositório
 
 ```bash
@@ -51,44 +53,45 @@ git clone https://github.com/seu-usuario/fronglos.git
 cd fronglos
 ```
 
-### 2. Configurar as variáveis de ambiente
+### 2. Criar o arquivo `.env`
 
-A chave de assinatura do JWT **não** fica no código. Defina-a no ambiente:
+Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
+
+```dotenv
+DB_NAME=fronglos
+DB_USERNAME=postgres
+DB_PASSWORD=sua-senha
+JWT_SECRET=sua-chave-secreta-32-caracteres
+# EXPIRATION_TIME=3600000
+```
+
+A variável `EXPIRATION_TIME` é opcional e define o tempo de expiração do token JWT.
+
+### 3. Iniciar o banco de dados
 
 ```bash
-export JWT_SECRET="troque-por-uma-chave-longa-e-aleatoria-com-pelo-menos-32-caracteres"
-export JWT_EXPIRATION_MS=3600000
+docker compose up -d
 ```
 
-| Variável | Descrição | Padrão |
-|---|---|---|
-| `JWT_SECRET` | Chave secreta usada para assinar os tokens | obrigatória |
-| `JWT_EXPIRATION_MS` | Tempo de expiração do token em milissegundos | `3600000` (1 hora) |
+### 4. Executar a aplicação
 
-### 3. Executar com PostgreSQL 
-
-Crie o banco e informe as credenciais:
+Exponha as variáveis de ambiente e execute a aplicação com o perfil `dev`:
 
 ```bash
-export DB_URL="jdbc:postgresql://localhost:5432/fronglos"
-export DB_USERNAME="postgres"
-export DB_PASSWORD="sua-senha"
+set -a
+source .env
+set +a
 
-./mvnw spring-boot:run -Dspring-boot.run.profiles=postgres
+./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
+### 5. Documentação (Swagger)
 
-### 4. Documentação interativa (Swagger)
+Com a aplicação em execução, acesse:
 
-Com a aplicação rodando, acesse:
-
-```
 http://localhost:8080/swagger-ui/index.html
-```
 
-Use o botão **Authorize** e informe o token JWT para testar as rotas protegidas.
-
----
+Use o botão **Authorize** para informar o token JWT e testar as rotas protegidas.
 
 ## Endpoints
 
