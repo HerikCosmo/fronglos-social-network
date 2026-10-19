@@ -44,8 +44,6 @@ O Fronglos permite:
 
 ## Como executar
 
-## Como executar
-
 ### 1. Clonar o repositório
 
 ```bash
